@@ -13,6 +13,7 @@ def getFrequency(text):
 
 
 def buildHuffmanTree(frequency):
+    """Build the Huffman tree from the frequency dictionary."""
     heap = [[weight, [char, ""]] for char, weight in frequency.items()]
     heapq.heapify(heap)
     
@@ -37,10 +38,12 @@ def huffmanCoding(text):
     return huffman_code
 
 def encode(text, huffman_code):
+    """Encode the text using the Huffman tree."""
     encoded_text = ''.join(huffman_code[char] for char in text)
     return encoded_text
 
 def decode(encoded_text, huffman_code, separator=''):
+    """Decode the encoded text using the Huffman tree."""
     reverse_huffman_code = {code: char for char, code in huffman_code.items()}
     current_code = ""
     decoded_text = ""
@@ -67,7 +70,7 @@ def readHuffmanCodeFromFile(filename):
     return huffman_code
 
 if __name__ == "__main__":
-    # Example usage
+    # Example usage, test the Huffman coding functions
     text = "hello world"
     huffman_code = huffmanCoding(text)
     print("Huffman Code: ", huffman_code)

@@ -1,8 +1,7 @@
 import unittest
 from huffmancoding import huffmanCoding, encode, decode, getFrequency
-from training import getTextTrainingData, getImageTrainingData, convertToPixel, convertToString, restorePixelToList, getRandomImageGeneratorTrainingData
+from training import getTextTrainingData, convertToPixel, restorePixelToList, getRandomImageGeneratorTrainingData
 from metrics import getCompressionRatio, measureTime, measureSpace
-import tensorflow as tf
 import os
 
 

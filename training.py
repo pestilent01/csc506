@@ -2,7 +2,7 @@ import io
 import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from huffmancoding import huffmanCoding, encode, decode
+from huffmancoding import huffmanCoding
 import base64
 from PIL import Image
 import random
@@ -17,16 +17,6 @@ def getTextTrainingData(numberOfReviews=1000):
         text += review[0].numpy().decode('utf-8')
     return text+" ", validationData
 
-def getImageTestData():
-    ds,info = tfds.load('cifar10', split='train', as_supervised=True, with_info=True)
-    image = ds.take(1)
-    image = next(iter(image))[0]
-    base64Image = convertToBase64(image)
-    image = tf.image.rgb_to_grayscale(image)
-    tmp = image.numpy()
-    dimensions = tmp.shape
-        
-    return base64Image, dimensions
 
 def getRandomImageGeneratorTrainingData():
     images = []
@@ -88,12 +78,6 @@ def convertToImage(stringData):
     image = Image.fromarray(image_array)
     return image
 
-
-def convertToBase64(image):
-    result = base64.b64encode(image.tobytes()).decode('utf-8')
-
-    return result
-
 def convertToPixel(image):
     #every three values on the image list is a pixel value, combine into one single string delimted by "-"
     result =[]
@@ -115,15 +99,6 @@ def convertToVector(stringData):
     '''Convert a comma separated string to a vector of integers.'''
     result = list(map(int, stringData.split(',')))
     return result
-
-def getAudioTrainingData():
-    '''Get audio training data from tensorflow speech_commands dataset. Combine all audio files into a single string.'''
-    ds,info = tfds.load('speech_commands', split='train', as_supervised=True, with_info=True)
-    audio = []
-    for audio_file, label in ds.take(1000):
-        audio.append(audio_file.numpy())
-    
-    return audio
 
 def trainHuffmanCodeText():
     '''Train the Huffman code on text data and save it to a file.'''
@@ -156,6 +131,7 @@ def trainHuffmanCodeImage():
     with open('./data/huffman_code_image.data', 'w') as file:
         for char, code in huffman_code_image.items():
             file.write(f"{char}: {code}\n")
+            
 def trainHuffmanCodeImageHash():
     '''Train the Huffman code on image data and save it to a file.'''
     training_image, _ = getRandomImageGeneratorTrainingData()
